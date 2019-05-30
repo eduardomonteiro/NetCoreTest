@@ -18,7 +18,7 @@ namespace PopulateDataFromJson
 
 		public List<Product> GetData()
 		{
-			var jsonData = _wc.DownloadString("https://raw.githubusercontent.com/eduardomonteiro/projeto_opensource/master/test.json");
+			var jsonData = _wc.DownloadString("https://raw.githubusercontent.com/eduardomonteiro/NetCoreTest/master/BitCoinBancoDevTest/wwwroot/books.json");
 			var data = JsonConvert.DeserializeObject<List<Product>>(jsonData);
 			List<Product> products = new List<Product>();
 
