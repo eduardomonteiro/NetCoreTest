@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Newtonsoft.Json;
+using PopulateDataFromJson.Utils;
 using System.Collections.Generic;
 using System.Net;
 
@@ -8,26 +9,22 @@ namespace PopulateDataFromJson
 	public class ReadJson
 	{
 		WebClient _wc;
-		public dynamic GetData(WebClient wc)
+		FixStringJson _fixStringsList;
+		public ReadJson(FixStringJson fixStringsList, WebClient wc)
 		{
+			_fixStringsList = fixStringsList;
 			_wc = wc;
+		}
+
+		public List<Product> GetData()
+		{
 			var jsonData = _wc.DownloadString("https://raw.githubusercontent.com/eduardomonteiro/projeto_opensource/master/test.json");
 			var data = JsonConvert.DeserializeObject<List<Product>>(jsonData);
 			List<Product> products = new List<Product>();
 
-			foreach (var productJson in data)
-			{
-				if (productJson.Specifications.Genres.ToString().Contains('['))
-				{
-					//productJson.Specifications.Genre = new string[] { productJson.Specifications.Genres.ToString() };
-				}
-				else
-				{
-					productJson.Specifications.Genre = new string[] { productJson.Specifications.Genres.ToString() };
-				}
-			}
+			products = _fixStringsList.FixStringsList(data);
 
-			return data;
+			return products;
 		}
 
 	}

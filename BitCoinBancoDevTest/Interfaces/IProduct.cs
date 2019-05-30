@@ -6,7 +6,9 @@ namespace BitCoinBancoDevTest.Interfaces
 {
 	public interface IProduct
 	{
-		Task<IList<Product>> GetProductAsync();
+		Task<IList<ProductDTO>> GetProductAsync();
 		void SetProductAsync(List<Product> json);
+		List<ProductDTO> ConvertProductDTO(List<Product> products);
+		void LoadJsonData();
 	}
 }

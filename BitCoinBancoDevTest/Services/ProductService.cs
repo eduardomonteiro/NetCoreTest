@@ -1,5 +1,6 @@
 ﻿using BitCoinBancoDevTest.Interfaces;
 using Domain;
+using PopulateDataFromJson;
 using ServiceStack.Redis;
 using ServiceStack.Redis.Generic;
 using System.Collections.Generic;
@@ -9,11 +10,16 @@ namespace BitCoinBancoDevTest.Services
 {
 	public class ProductService : IProduct
 	{
-		public Task<IList<Product>> GetProductAsync()
+		ReadJson _readJson;
+		public ProductService()
+		{
+			_readJson = new ReadJson(new PopulateDataFromJson.Utils.FixStringJson(), new System.Net.WebClient());
+		}
+		public Task<IList<ProductDTO>> GetProductAsync()
 		{
 			using (RedisClient client = new RedisClient("localhost", 6379))
 			{
-				IRedisTypedClient<Product> product = client.As<Product>();
+				IRedisTypedClient<ProductDTO> product = client.As<ProductDTO>();
 				return Task.FromResult(product.GetAll());
 			}
 		}
@@ -21,9 +27,43 @@ namespace BitCoinBancoDevTest.Services
 		{
 			using (RedisClient client = new RedisClient("localhost", 6379))
 			{
-				IRedisTypedClient<Product> product = client.As<Product>();
-				//product.StoreAll(json);
+				IRedisTypedClient<ProductDTO> product = client.As<ProductDTO>();
+				var productsDto = ConvertProductDTO(json);
+				product.StoreAll(productsDto);
 			}
+		}
+
+		public List<ProductDTO> ConvertProductDTO(List<Product> products)
+		{
+			var productsDto = new List<ProductDTO>();
+			foreach (var product in products)
+			{
+				var spectDto = new SpecificationDTO
+				{
+					Id = product.Specifications.Id,
+					Author = product.Specifications.Author,
+					Genres = product.Specifications.Genre,
+					OriginallyPublished = product.Specifications.OriginallyPublished,
+					PageCount = product.Specifications.PageCount,
+					Illustrator = product.Specifications.Illustrators
+				};
+
+				var productDto = new ProductDTO
+				{
+					Id = product.Id,
+					Name = product.Name,
+					Price = product.Price,
+					Specifications = spectDto
+				};
+
+				productsDto.Add(productDto);
+			}
+			return productsDto;
+		}
+		public void LoadJsonData()
+		{
+			List<Product> data = _readJson.GetData();
+			SetProductAsync(data);
 		}
 	}
 }
