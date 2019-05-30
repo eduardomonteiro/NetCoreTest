@@ -14,10 +14,11 @@ namespace BitCoinBancoDevTest.Services
 		public ProductService()
 		{
 			_readJson = new ReadJson(new PopulateDataFromJson.Utils.FixStringJson(), new System.Net.WebClient());
+			LoadJsonData();
 		}
 		public Task<IList<ProductDTO>> GetProductAsync()
 		{
-			using (RedisClient client = new RedisClient("localhost", 6379))
+			using (RedisClient client = new RedisClient("10.5.0.6", 6379))
 			{
 				IRedisTypedClient<ProductDTO> product = client.As<ProductDTO>();
 				return Task.FromResult(product.GetAll());
@@ -25,7 +26,7 @@ namespace BitCoinBancoDevTest.Services
 		}
 		public void SetProductAsync(List<Product> json)
 		{
-			using (RedisClient client = new RedisClient("localhost", 6379))
+			using (RedisClient client = new RedisClient("10.5.0.6", 6379))
 			{
 				IRedisTypedClient<ProductDTO> product = client.As<ProductDTO>();
 				var productsDto = ConvertProductDTO(json);

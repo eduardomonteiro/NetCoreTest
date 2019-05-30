@@ -6,14 +6,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace BitCoinBancoDevTest
 {
 	public class Startup
 	{
 		public IConfiguration Configuration { get; }
+		static IProduct _productService { get; }
 
 		public Startup(IConfiguration configuration)
 		{
@@ -31,13 +30,6 @@ namespace BitCoinBancoDevTest
 
 			//enable OData
 			services.AddOData();
-
-			services.AddDistributedRedisCache(options =>
-			{
-				options.Configuration =
-					Configuration.GetConnectionString("ConexaoRedis");
-				options.InstanceName = "TesteRedisCache";
-			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
