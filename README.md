@@ -14,5 +14,7 @@ Have Docker running , set docker-compose project as a StartUp Project and press 
 ## Some urls examples
 
 http://10.5.0.5/api/catalog?$select=Price,Name
+
 http://10.5.0.5/api/catalog?$orderby=Price
+
 http://10.5.0.5/api/catalog?$top=2&$orderby=Name
