@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BitCoinBancoDevTest.Interfaces;
 using Domain;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BitCoinBancoDevTest.Controllers
@@ -23,6 +24,7 @@ namespace BitCoinBancoDevTest.Controllers
 		// GET api/Catalog
 		[AcceptVerbs("GET")]
 		[EnableQuery()]
+		[EnableCors]
 		public Task<IList<ProductDTO>> GetCatalog()
 		{
 			var products = _productService.GetProductAsync();
