@@ -17,12 +17,8 @@ namespace BitCoinBancoDevTest.Services
 				return Task.FromResult(product.GetAll());
 			}
 		}
-		public void SetProductAsync(dynamic json)
+		public void SetProductAsync(List<Product> json)
 		{
-			for (int i = 0; i < json.Count-1; i++)
-			{
-				var currentItem = json[i];
-			}
 			using (RedisClient client = new RedisClient("localhost", 6379))
 			{
 				IRedisTypedClient<Product> product = client.As<Product>();

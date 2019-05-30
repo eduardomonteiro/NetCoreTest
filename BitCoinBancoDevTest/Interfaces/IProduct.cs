@@ -7,6 +7,6 @@ namespace BitCoinBancoDevTest.Interfaces
 	public interface IProduct
 	{
 		Task<IList<Product>> GetProductAsync();
-		void SetProductAsync(dynamic json);
+		void SetProductAsync(List<Product> json);
 	}
 }

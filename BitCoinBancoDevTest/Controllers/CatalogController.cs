@@ -24,7 +24,7 @@ namespace BitCoinBancoDevTest.Controllers
 		public Task<IList<Product>> GetCatalog()
 		{
 			ReadJson test = new ReadJson();
-			dynamic data = test.GetData(new System.Net.WebClient());
+			List<Product> data = test.GetData(new System.Net.WebClient());
 
 			_productService.SetProductAsync(data);
 
